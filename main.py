@@ -1,7 +1,7 @@
 from dotenv import load_dotenv
 import os
 
-load_dotenv(dotenv_path="./config/.env")
+load_dotenv()
 BOT_TOKEN = os.getenv('BOT_TOKEN')
 
 import discord
