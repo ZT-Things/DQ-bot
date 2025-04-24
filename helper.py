@@ -1,6 +1,11 @@
 import sqlite3
 from settings import *
 
+def get_days_diff():
+    current_date = datetime.now()
+    days_difference =  (current_date - START_DATE).days + 1
+    return days_difference
+
 def get_current_question():
     pass
 
@@ -25,3 +30,4 @@ def add_daily_question(title: str, choices: str, suggested=False, owner="SmolBoo
 
     conn.commit()
     conn.close()
+    

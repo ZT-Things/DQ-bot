@@ -19,12 +19,20 @@ from settings import *
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='!', intents=intents)
 
-scheduler = AsyncIOScheduler()
+import os
 
-def is_owner():
-    def predicate(ctx):
-        return ctx.author.id == OWNER
-    return commands.check(predicate)
+async def load_cogs():
+    for filename in os.listdir('./cogs'):
+        if filename.endswith('.py'):
+            extension = f'cogs.{filename[:-3]}'
+            print(f"Loading: {extension}")
+            try:
+                await bot.load_extension(extension)
+                print(f"Loaded: {extension}")
+            except Exception as e:
+                print(f"Failed to load {extension}: {e}")
+
+scheduler = AsyncIOScheduler()
 
 @bot.event
 async def on_ready():
@@ -39,10 +47,6 @@ async def on_ready():
     
     scheduler.start()
 
-def get_days_diff():
-    current_date = datetime.now()
-    days_difference =  (current_date - START_DATE).days + 1
-    return days_difference
 
 async def send_dq():
     channel = bot.get_channel(DQ_CHANNEL_ID)
@@ -56,16 +60,16 @@ async def on_guild_join(guild):
         print(f"Leaving unauthorized server: {guild.name}")
         await guild.leave()
 
-@bot.command()
-@is_owner()
-async def hello(ctx):
-    await ctx.send(f"Hello {ctx.author.name}!")
-    channel = bot.get_channel(DQ_CHANNEL_ID)
-    message = await channel.send("BUH?")
-    try:
-        await message.publish()
-    except Exception as e:
-        print(f"Published went wrong: {e}")
+# @bot.command()
+# @is_owner()
+# async def hello(ctx):
+#     await ctx.send(f"Hello {ctx.author.name}!")
+#     channel = bot.get_channel(DQ_CHANNEL_ID)
+#     message = await channel.send("BUH?")
+#     try:
+#         await message.publish()
+#     except Exception as e:
+#         print(f"Published went wrong: {e}")
 
     
 

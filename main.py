@@ -1,3 +1,9 @@
-from helper import *
+from bot import *
+import asyncio
 
-bot.run(BOT_TOKEN)
+async def main():
+    await load_cogs()
+    
+if __name__ == "__main__":
+    asyncio.run(main())
+    bot.run(BOT_TOKEN)
