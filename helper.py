@@ -20,13 +20,18 @@ def get_question_amount():
 
     return int(count)
 
-def add_daily_question(title: str, choices: str, suggested=False, owner="SmolBooster"):
+def add_daily_question(title: str, choices: str, suggested=False, owner="SmolBooster", index=None):
     conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
 
     counter = get_question_amount() + 1
 
+    if index:
+        counter = int(index)
+        cursor.execute("UPDATE Questions SET counter = counter + 1 WHERE counter >= ?", index)
+
     cursor.execute("INSERT INTO Questions (question_text, choices_text, counter, suggested, owner) VALUES (?, ?, ?, ?, ?)", (title, choices, counter, suggested, owner))
+        
 
     conn.commit()
     conn.close()

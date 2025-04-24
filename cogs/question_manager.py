@@ -10,9 +10,9 @@ class DQ(commands.Cog):
 
     @commands.command()
     @is_owner()
-    async def dqadd(self, ctx, title, choices, suggested=False, owner="SmolBooster"):
+    async def dqadd(self, ctx, title, choices, suggested=False, owner="SmolBooster", index=None):
         try:
-            add_daily_question(title, choices, suggested, owner)
+            add_daily_question(title, choices, bool(suggested), owner, index)
             await ctx.send("Successful")
         except Exception as e:
             await ctx.send(f"Unsuccessful: {e}")
