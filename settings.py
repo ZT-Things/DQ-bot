@@ -1,3 +1,8 @@
 DQ_SERVER_ID = 1362921674323792002
 DQ_CHANNEL_ID = 1362930626239660062
 OWNER = 532889338779009024
+
+from datetime import datetime
+
+START_DATE = datetime.strptime("21/04/25", "%d/%m/%y")
+DATABASE = "data.db"
