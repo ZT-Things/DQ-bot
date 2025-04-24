@@ -8,5 +8,3 @@ def is_owner():
     def predicate(ctx):
         return ctx.author.id == OWNER
     return commands.check(predicate)
-
-print(OWNER)
