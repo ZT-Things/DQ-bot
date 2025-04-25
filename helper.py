@@ -6,8 +6,21 @@ def get_days_diff():
     days_difference =  (current_date - START_DATE).days + 1
     return days_difference
 
-def get_current_question():
-    pass
+def get_question(index, range=1):
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+
+    if not index:
+        print("Specify index")
+        return None
+
+    cursor.execute("SELECT * FROM Questions WHERE Counter >= ? ORDER BY Counter ASC LIMIT ?", (index, range))
+
+    results = cursor.fetchall()
+
+    conn.close()
+
+    return results
 
 def get_question_amount():
     conn = sqlite3.connect(DATABASE)
@@ -46,3 +59,10 @@ def pop_dq():
 
     conn.commit()
     conn.close()
+
+if __name__ == "__main__":
+
+    x = get_question(1)
+    print(x)
+
+    pass
