@@ -62,7 +62,7 @@ def pop_dq():
 
 if __name__ == "__main__":
 
-    x = get_question(1)
+    x = get_question(1, 2)
     print(x)
 
     pass
