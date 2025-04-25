@@ -83,4 +83,4 @@ if __name__ == "__main__":
 
     print(count)
     
-    add_daily_question("Do you prefer cat or dog", "Cat%Dog")
+    add_dq("Do you prefer cat or dog", "Cat%Dog")
