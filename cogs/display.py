@@ -2,7 +2,8 @@ import sys, os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from discord.ext import commands
 from utils.checks import is_owner
-from helper import get_question_amount
+from helper import get_question_amount, get_question
+from settings import RESULTS_PER_PAGE
 
 class Display(commands.Cog):
     def __init__(self, bot):
@@ -48,8 +49,28 @@ class Display(commands.Cog):
     async def display_by_number(self, ctx):
         pass
 
-    async def display_by_page(self, ctx):
-        pass
+    async def display_by_page(self, ctx, page):
+        info = get_question((RESULTS_PER_PAGE * page ) + 1 - RESULTS_PER_PAGE, 10)
+        message = f"""Page #{page}"""
+
+        for i in info:
+            id = i[0]
+            title = i[1]
+            choices = i[2].split("%")
+            date = i[3]
+            counter = i[4]
+            suggested = "True" if i[5] else "False"
+            host = i[6]
+            x = f"""
+    Question: {counter}
+        Title: {title}
+        Choices: {choices}
+        Date: {date}
+        Is Suggested: {suggested}
+        Host: {host}"""
+            message += x
+
+        await ctx.send(message)
 
     async def display_amount(self, ctx):
         question_amount = get_question_amount()

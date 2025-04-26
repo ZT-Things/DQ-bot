@@ -6,3 +6,5 @@ from datetime import datetime
 
 START_DATE = datetime.strptime("21/04/25", "%d/%m/%y")
 DATABASE = "data.db"
+
+RESULTS_PER_PAGE = 10
