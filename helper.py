@@ -70,6 +70,34 @@ def remove_dq(counter):
     conn.commit()
     conn.close()
 
+def get_choices(info):
+
+    return info[2].split("%")
+
+def parse_dq(info):
+    id = info[0]
+    title = info[1]
+    choices = info[2].split("%")
+    date = info[3]
+    counter = info[4]
+    suggested = True if info[5] == 1 else False
+    host = info[6]
+
+    dq = f"""**[{counter}] Daily question — """
+
+    if suggested:
+        dq += f"Suggested by {host}"
+    else:
+        dq += f"Hosted by {host}"
+
+    dq += f"""**\nQ: {title}?\n"""
+
+    c = 1
+
+    for i in choices:
+        dq += f"\n{c}: {i} (0 votes)"
+        c += 1
+
 if __name__ == "__main__":
 
     x = get_question(1, 2)

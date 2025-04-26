@@ -141,10 +141,19 @@ Question: {counter}
         
         await ctx.send("No message found.")
 
-    # @commands.commad()
-    # @is_owner()
-    # async def update_latest(self, ctx):
-    #     pass
+    @commands.commad()
+    @is_owner()
+    async def update_latest(self, ctx):
+        channel = discord.utils.get(ctx.guild.text_channels, id = DQ_CHANNEL_ID)
+
+        if not channel:
+            await ctx.send("Channel not found")
+            return
+        
+        async for message in channel.history(limit=1):
+            if not message.reactions:
+                await ctx.send("No reactions on the latest message")
+                return
 
 async def setup(bot):
     await bot.add_cog(Display(bot))

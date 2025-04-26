@@ -54,31 +54,9 @@ async def send_dq():
         return
     
     counter = get_days_diff()
-
-    info = get_question(counter)[0]
-
-    id = info[0]
-    title = info[1]
-    choices = info[2].split("%")
-    date = info[3]
-    counter = info[4]
-    suggested = True if info[5] == 1 else False
-    host = info[6]
-
-    dq = f"""**[{counter}] Daily question — """
-
-    if suggested:
-        dq += f"Suggested by {host}"
-    else:
-        dq += f"Hosted by {host}"
-
-    dq += f"""**\nQ: {title}?\n"""
-
-    c = 1
-
-    for i in choices:
-        dq += f"\n{c}: {i} (0 votes)"
-        c += 1
+    info = get_question(counter)
+    dq = parse_dq(info)
+    choices = get_choices(info)
 
     message = await channel.send(dq)
 
