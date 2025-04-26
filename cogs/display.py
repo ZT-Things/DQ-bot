@@ -3,7 +3,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from discord.ext import commands
 import discord
 from utils.checks import is_owner
-from helper import get_question_amount, get_question, get_days_diff
+from helper import get_question_amount, get_question, get_days_diff, parse_dq
 from settings import RESULTS_PER_PAGE, DQ_CHANNEL_ID
 
 class Display(commands.Cog):
@@ -141,7 +141,7 @@ Question: {counter}
         
         await ctx.send("No message found.")
 
-    @commands.commad()
+    @commands.command()
     @is_owner()
     async def update_latest(self, ctx):
         channel = discord.utils.get(ctx.guild.text_channels, id = DQ_CHANNEL_ID)
@@ -154,6 +154,19 @@ Question: {counter}
             if not message.reactions:
                 await ctx.send("No reactions on the latest message")
                 return
+            
+            reaction_info = []
+            for reaction in message.reactions:
+                reaction_info.append(str(reaction.count))
+
+            counter = get_days_diff()
+            info = get_question(counter)[0]
+
+            dq = parse_dq(info, reaction_info)
+
+            await message.edit(content=dq)
+            await ctx.send("Latest question updated")
+            
 
 async def setup(bot):
     await bot.add_cog(Display(bot))

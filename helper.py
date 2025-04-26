@@ -74,7 +74,7 @@ def get_choices(info):
 
     return info[2].split("%")
 
-def parse_dq(info):
+def parse_dq(info, votes=None):
     id = info[0]
     title = info[1]
     choices = info[2].split("%")
@@ -94,9 +94,17 @@ def parse_dq(info):
 
     c = 1
 
-    for i in choices:
-        dq += f"\n{c}: {i} (0 votes)"
-        c += 1
+
+    if not votes:
+        for i in choices:
+            dq += f"\n{c}: {i} (0 votes)"
+            c += 1
+    else:
+        for i in range(len(choices)):
+            dq += f"\n{c}: {choices[i]} ({int(votes[i]) - 1} votes)"
+            c += 1
+
+    return dq
 
 if __name__ == "__main__":
 

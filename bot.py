@@ -43,7 +43,7 @@ async def on_ready():
     except Exception as e:
         print(f'Error syncing commands: {e}')
     
-    scheduler.add_job(send_dq, 'cron', hour=4, minute=0)
+    scheduler.add_job(send_dq, 'cron', hour=4, minute=20)
     
     scheduler.start()
 
@@ -54,7 +54,7 @@ async def send_dq():
         return
     
     counter = get_days_diff()
-    info = get_question(counter)
+    info = get_question(counter)[0]
     dq = parse_dq(info)
     choices = get_choices(info)
 
