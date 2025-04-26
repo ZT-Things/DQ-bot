@@ -43,7 +43,7 @@ async def on_ready():
     except Exception as e:
         print(f'Error syncing commands: {e}')
     
-    scheduler.add_job(send_dq, 'cron', hour=8, minute=2)
+    scheduler.add_job(send_dq, 'cron', hour=4, minute=0)
     
     scheduler.start()
 
@@ -78,8 +78,13 @@ async def send_dq():
 
     for i in choices:
         dq += f"\n{c}: {i} (0 votes)"
+        c += 1
 
-    await channel.send(dq)
+    message = await channel.send(dq)
+
+    for i in range(len(choices)):
+        await message.add_reaction(CHOICE_EMOJI[i])
+
 
 @bot.event
 async def on_guild_join(guild):

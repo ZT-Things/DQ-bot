@@ -1,9 +1,10 @@
 import sys, os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from discord.ext import commands
+import discord
 from utils.checks import is_owner
 from helper import get_question_amount, get_question, get_days_diff
-from settings import RESULTS_PER_PAGE
+from settings import RESULTS_PER_PAGE, DQ_CHANNEL_ID
 
 class Display(commands.Cog):
     def __init__(self, bot):
@@ -84,7 +85,7 @@ Question: {counter}
         return x
 
     async def display_by_page(self, ctx, page):
-        info = get_question((RESULTS_PER_PAGE * page ) + 1 - RESULTS_PER_PAGE, 10)
+        info = get_question((RESULTS_PER_PAGE * page) + 1 - RESULTS_PER_PAGE, 10)
         message = f"""Page #{page}"""
 
         for i in info:
@@ -98,6 +99,52 @@ Question: {counter}
 
     async def display_info(self, ctx):
         await ctx.send("Todo cuh")
+
+    @commands.command()
+    @is_owner()
+    async def get_last7(self, ctx):
+        channel = discord.utils.get(ctx.guild.text_channels, id=DQ_CHANNEL_ID)
+
+        if not channel:
+            await ctx.send("Channel not found.")
+            return
+
+        messages = []
+        async for message in channel.history(limit=7):
+            messages.append(f"{message.author}: {message.content}")
+
+        if messages:
+            await ctx.send("\n".join(messages))
+        else:
+            await ctx.send("No messages found")
+            
+    @commands.command()
+    @is_owner()
+    async def latest_reaction(self, ctx):
+        channel = discord.utils.get(ctx.guild.text_channels, id=DQ_CHANNEL_ID)
+        
+        if not channel:
+            await ctx.send("Channel not found")
+            return
+        
+        async for message in channel.history(limit=1):
+            if not message.reactions:
+                await ctx.send("No reactions on the latest message")
+                return
+            
+            reaction_info = []
+            for reaction in message.reactions:
+                reaction_info.append(f"({reaction.emoji}) ({reaction.count})")
+                
+            await ctx.send("Reactions on the latest message:\n" + "\n".join(reaction_info))
+            return
+        
+        await ctx.send("No message found.")
+
+    # @commands.commad()
+    # @is_owner()
+    # async def update_latest(self, ctx):
+    #     pass
 
 async def setup(bot):
     await bot.add_cog(Display(bot))

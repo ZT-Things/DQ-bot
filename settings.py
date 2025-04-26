@@ -8,3 +8,7 @@ START_DATE = datetime.strptime("26/04/25", "%d/%m/%y")
 DATABASE = "data.db"
 
 RESULTS_PER_PAGE = 10
+
+CHOICE_EMOJI = ["1️⃣", "2️⃣", "3️⃣"]
+
+UPDATE_INTERVAL = 60
