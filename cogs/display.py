@@ -4,7 +4,7 @@ from discord.ext import commands
 import discord
 from utils.checks import is_owner
 from helper import get_question_amount, get_question, get_days_diff, parse_dq
-from settings import RESULTS_PER_PAGE, DQ_CHANNEL_ID
+from settings import RESULTS_PER_PAGE, DQ_CHANNEL_ID, DQ_PING
 
 class Display(commands.Cog):
     def __init__(self, bot):
@@ -166,6 +166,11 @@ Question: {counter}
 
             await message.edit(content=dq)
             await ctx.send("Latest question updated")
+
+    @commands.command()
+    @is_owner()
+    async def ping(self, ctx):
+        await ctx.send(DQ_PING)
             
 
 async def setup(bot):

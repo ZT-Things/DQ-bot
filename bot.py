@@ -43,8 +43,10 @@ async def on_ready():
     except Exception as e:
         print(f'Error syncing commands: {e}')
     
-    scheduler.add_job(send_dq, 'cron', hour=4, minute=20)
+    scheduler.add_job(send_dq, 'cron', hour=5, minute=15)
     
+    scheduler.add_job(update_reactions, 'interval', seconds=UPDATE_INTERVAL)
+
     scheduler.start()
 
 
@@ -58,11 +60,39 @@ async def send_dq():
     dq = parse_dq(info)
     choices = get_choices(info)
 
-    message = await channel.send(dq)
+    dq_message = await channel.send(dq)
+
+    await dq_message.publish()
+
+    dq_ping =  await channel.send(DQ_PING)
 
     for i in range(len(choices)):
-        await message.add_reaction(CHOICE_EMOJI[i])
+        await dq_message.add_reaction(CHOICE_EMOJI[i])
 
+async def update_reactions():
+    channel = bot.get_channel(DQ_CHANNEL_ID)
+
+    updated = 0
+
+    async for message in channel.history(limit=SUPPORTED_RANGE * 2):
+        if not message.reactions:
+            continue
+
+        if message.author != bot.user:
+            continue
+        
+        reaction_info = []
+        for reaction in message.reactions:
+            reaction_info.append(str(reaction.count))
+
+        counter = get_days_diff() - updated
+        info = get_question(counter)[0]
+
+        dq = parse_dq(info, reaction_info)
+
+        await message.edit(content=dq)
+
+        updated += 1
 
 @bot.event
 async def on_guild_join(guild):
