@@ -43,7 +43,7 @@ async def on_ready():
     except Exception as e:
         print(f'Error syncing commands: {e}')
     
-    scheduler.add_job(send_dq, 'cron', hour=17, minute=0)
+    scheduler.add_job(send_dq, 'cron', hour=8, minute=2)
     
     scheduler.start()
 
@@ -52,7 +52,34 @@ async def send_dq():
     channel = bot.get_channel(DQ_CHANNEL_ID)
     if not channel:
         return
-    await channel.send("Hello!")
+    
+    counter = get_days_diff()
+
+    info = get_question(counter)[0]
+
+    id = info[0]
+    title = info[1]
+    choices = info[2].split("%")
+    date = info[3]
+    counter = info[4]
+    suggested = True if info[5] == 1 else False
+    host = info[6]
+
+    dq = f"""**[{counter}] Daily question — """
+
+    if suggested:
+        dq += f"Suggested by {host}"
+    else:
+        dq += f"Hosted by {host}"
+
+    dq += f"""**\nQ: {title}?\n"""
+
+    c = 1
+
+    for i in choices:
+        dq += f"\n{c}: {i} (0 votes)"
+
+    await channel.send(dq)
 
 @bot.event
 async def on_guild_join(guild):
@@ -79,8 +106,12 @@ async def on_guild_join(guild):
 
 if __name__ == "__main__":
     
-    count = get_question_amount()
+    # count = get_question_amount()
 
-    print(count)
+    # print(count)
     
-    add_dq("Do you prefer cat or dog", "Cat%Dog")
+    # add_dq("Do you prefer cat or dog", "Cat%Dog")
+
+    
+
+    pass

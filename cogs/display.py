@@ -71,7 +71,7 @@ class Display(commands.Cog):
         choices = i[2].split("%")
         date = i[3]
         counter = i[4]
-        suggested = "True" if i[5] else "False"
+        suggested = "True" if i[5] == 1 else "False"
         host = i[6]
         x = f"""
 Question: {counter}
