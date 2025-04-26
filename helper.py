@@ -60,6 +60,16 @@ def pop_dq():
     conn.commit()
     conn.close()
 
+def remove_dq(counter):
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+
+    cursor.execute("DELETE FROM Questions WHERE counter = ?", (counter,))
+    cursor.execute("UPDATE Questions SET counter = counter - 1 WHERE counter > ?", (counter,))
+
+    conn.commit()
+    conn.close()
+
 if __name__ == "__main__":
 
     x = get_question(1, 2)
