@@ -11,6 +11,9 @@ from helper import *
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
+import asyncio
+reaction_lock = asyncio.Lock()
+
 from settings import *
 
 intents = discord.Intents.all()
@@ -67,29 +70,41 @@ async def send_dq():
         await dq_message.add_reaction(CHOICE_EMOJI[i])
 
 async def update_reactions():
-    channel = bot.get_channel(DQ_CHANNEL_ID)
+    if reaction_lock.locked():
+        print("update_reactions skipped: already running")
+        return
 
-    updated = 0
+    async with reaction_lock:
+        channel = bot.get_channel(DQ_CHANNEL_ID)
+        updated = 0
 
-    async for message in channel.history(limit=SUPPORTED_RANGE * 2):
-        if not message.reactions:
-            continue
+        async for message in channel.history(limit=SUPPORTED_RANGE * 2):
+            print(message.content)
+            if not message.reactions:
+                print("Skipping ping message cuh")
+                continue
 
-        if message.author != bot.user:
-            continue
-        
-        reaction_info = []
-        for reaction in message.reactions:
-            reaction_info.append(str(reaction.count))
+            if message.author != bot.user:
+                continue
 
-        counter = get_days_diff() - updated
-        info = get_question(counter)[0]
+            reaction_info = [str(r.count) for r in message.reactions]
 
-        dq = parse_dq(info, reaction_info)
+            counter = get_days_diff() - updated
+            info = get_question(counter)[0]
 
-        await message.edit(content=dq)
+            dq = parse_dq(info, reaction_info)
 
-        updated += 1
+            # print(message.conte4nt)
+
+            if message.content != dq:
+                print("Will edit")
+                await asyncio.sleep(1)
+                print("About to edit")
+                await message.edit(content=dq)
+                print("Edited")
+            await asyncio.sleep(1)
+            updated += 1
+
 
 @bot.event
 async def on_guild_join(guild):
