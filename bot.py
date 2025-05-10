@@ -40,7 +40,7 @@ async def on_ready():
     except Exception as e:
         print(f'Error syncing commands: {e}')
     
-    scheduler.add_job(send_dq, 'cron', hour=5, minute=15)
+    scheduler.add_job(send_dq, 'cron', hour=17, minute=0)
     
     scheduler.add_job(update_reactions, 'interval', seconds=UPDATE_INTERVAL)
 
