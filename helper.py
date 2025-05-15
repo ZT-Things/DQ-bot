@@ -1,9 +1,18 @@
 import sqlite3
 from settings import *
+from datetime import datetime, timedelta, time
 
 def get_days_diff():
     current_date = datetime.now()
-    days_difference =  (current_date - START_DATE).days + 1
+    current_time = current_date.time()
+
+    # Check if the current time is before 17:00
+    if current_time < time(17, 0):
+        current_date = current_date.replace(hour=0, minute=0, second=0, microsecond=0) - timedelta(days=1)
+    else:
+        current_date = current_date.replace(hour=0, minute=0, second=0, microsecond=0)
+
+    days_difference = (current_date - START_DATE).days + 1
     return days_difference
 
 def get_question(index, range=1):
