@@ -101,12 +101,12 @@ async def update_reactions():
 
             reaction_info = [str(r.count) for r in message.reactions]
 
-            counter = get_days_diff() - updated
+            counter = get_message_counter(message.content)
             info = get_question(counter)[0]
 
             dq = parse_dq(info, reaction_info)
 
-            # print(message.conte4nt)
+            # print(message.content)
 
             if message.content != dq:
                 print("Will edit")
@@ -114,8 +114,9 @@ async def update_reactions():
                 print("About to edit")
                 await message.edit(content=dq)
                 print("Edited")
-            await asyncio.sleep(1)
+            await asyncio.sleep(20)
             updated += 1
+
 
 
 @bot.event

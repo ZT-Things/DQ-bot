@@ -10,7 +10,7 @@ class DQ(commands.Cog):
 
     @commands.command()
     @is_owner()
-    async def dqadd(self, ctx, title, choices, suggested=False, owner="SmolBooster", index=None):
+    async def dqadd(self, ctx, title, choices, suggested, owner="SmolBooster", index=None):
         try:
             add_dq(title, choices, bool(suggested), owner, index)
             await ctx.send("Successfully added new question")

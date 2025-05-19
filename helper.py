@@ -83,6 +83,13 @@ def get_choices(info):
 
     return info[2].split("%")
 
+import re
+
+def get_message_counter(message):
+    match = re.search(r"\[(\d+)\]", message)
+
+    return int(match.group(1))
+
 def parse_dq(info, votes=None):
     id = info[0]
     title = info[1]
@@ -117,7 +124,15 @@ def parse_dq(info, votes=None):
 
 if __name__ == "__main__":
 
-    x = get_question(1, 2)
-    print(x)
+    # x = get_question(1, 2)
+    # print(x)
+
+    message = """**[9] Daily question — Hosted by SmolBooster**
+Q: Do you like travelling?
+
+1: Yes
+2: No"""
+
+    print(get_message_counter(message))
 
     pass

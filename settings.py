@@ -4,15 +4,15 @@ OWNER = 532889338779009024
 
 from datetime import datetime
 
-START_DATE = datetime.strptime("10/05/25", "%d/%m/%y")
+START_DATE = datetime.strptime("11/05/25", "%d/%m/%y")
 DATABASE = "data.db"
 
 RESULTS_PER_PAGE = 10
 
 CHOICE_EMOJI = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"]
 
-UPDATE_INTERVAL = 60
+UPDATE_INTERVAL = 600
 
 DQ_PING = "<@&1363644273957933297>"
 
-SUPPORTED_RANGE = 7
+SUPPORTED_RANGE = 8
