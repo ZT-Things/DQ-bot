@@ -11,7 +11,7 @@ RESULTS_PER_PAGE = 10
 
 CHOICE_EMOJI = ["1️⃣", "2️⃣", "3️⃣", "4️⃣", "5️⃣", "6️⃣", "7️⃣", "8️⃣", "9️⃣"]
 
-UPDATE_INTERVAL = 600
+UPDATE_INTERVAL = 60
 
 DQ_PING = "<@&1363644273957933297>"
 

@@ -102,7 +102,12 @@ async def update_reactions():
             reaction_info = [str(r.count) for r in message.reactions]
 
             counter = get_message_counter(message.content)
-            info = get_question(counter)[0]
+            
+            print(counter, message.author, bot.user, "Cuh")
+            
+            info = get_question(int(counter))[0]
+
+            print(info, "Info")
 
             dq = parse_dq(info, reaction_info)
 
