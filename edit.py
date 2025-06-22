@@ -9,12 +9,12 @@ from settings import *
 @bot.command()
 async def edit_message(ctx):
     channel_id = DQ_CHANNEL_ID
-    message_id = 1373238614552481885
-    new_content = """**[8] Daily question -- Hosted by SmolBooster**
-Q: Do you drink coffee often (at least three times a day)?
+    message_id = 1375051056714748046
+    new_content = """**[13] Daily question -- Hosted by SmolBooster**
+Q: Do you like peanut butter?
     
-1: Yes (1 votes)
-2: No (5 votes)"""
+1: Yes (0 votes)
+2: No (1 votes)"""
     try:
         channel = bot.get_channel(channel_id)
         if channel is None:

@@ -4,7 +4,7 @@ OWNER = 532889338779009024
 
 from datetime import datetime
 
-START_DATE = datetime.strptime("11/05/25", "%d/%m/%y")
+START_DATE = datetime.strptime("10/05/25", "%d/%m/%y")
 DATABASE = "data.db"
 
 RESULTS_PER_PAGE = 10

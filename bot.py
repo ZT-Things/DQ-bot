@@ -43,24 +43,18 @@ async def on_ready():
     except Exception as e:
         print(f'Error syncing commands: {e}')
     
-    scheduler.add_job(send_dq, 'cron', hour=17, minute=0)
+    scheduler.add_job(send_dq, 'cron', hour=17, minute=25)
     
     scheduler.add_job(update_reactions, 'interval', seconds=UPDATE_INTERVAL)
 
     scheduler.start()
 
-dq_sent = False
 
 async def send_dq():
     # TODO: Add a check to see if daily question is already sent
-    global dq_sent
-    if dq_sent:
-        print("send_dq skipped: already sent")
-        return
-    dq_sent = True
-    if reaction_lock.locked():
-        print("send_dq skipped: already running")
-        return
+    # if reaction_lock.locked():
+    #     print("send_dq skipped: already running")
+    #     return
     channel = bot.get_channel(DQ_CHANNEL_ID)
     if not channel:
         return
@@ -78,8 +72,6 @@ async def send_dq():
 
     for i in range(len(choices)):
         await dq_message.add_reaction(CHOICE_EMOJI[i])
-
-    dq_sent = False
 
 async def update_reactions():
     if reaction_lock.locked():
