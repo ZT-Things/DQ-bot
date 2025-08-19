@@ -43,7 +43,7 @@ async def on_ready():
     except Exception as e:
         print(f'Error syncing commands: {e}')
     
-    scheduler.add_job(send_dq, 'cron', hour=17, minute=25)
+    scheduler.add_job(send_dq, 'cron', hour=17, minute=0)
     
     scheduler.add_job(update_reactions, 'interval', seconds=UPDATE_INTERVAL)
 
@@ -114,7 +114,12 @@ async def update_reactions():
             await asyncio.sleep(20)
             updated += 1
 
-
+@bot.command(name="senddq")
+@commands.is_owner()
+async def senddq_command(ctx):
+    await ctx.send("Sending Daily Question...")
+    await send_dq()
+    await ctx.send("Daily Question sent!")
 
 @bot.event
 async def on_guild_join(guild):
